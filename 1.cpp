@@ -5,27 +5,28 @@ using namespace std;
 
 int main(){
 
-	ifstream infile("input/1.txt");
-	string input;
+    ifstream infile("input/1.txt");
+    string s;
+    getline(infile, s);
 
-	getline(infile, input);
+    int floor = 0;
+    bool part2_done = false;
 
-	int floor = 0;
-	int count = 0;
+    for(unsigned i = 0; i < s.length(); i++){
+        char c = s[i];
+        if(c == '('){
+            floor++;
+        }
+        else{
+            floor--;
+        }
+        if(floor == -1 && !part2_done){
+            cout << "Part 2: " << i+1 << endl;
+            part2_done = true;
+        }
+    }
 
-	for(char c : input){
-		if(c == '('){
-			floor++;
-		}
-		else floor--;
-		count++;
-		if(floor < 0){
-			cout << count << endl;
-			return 0;
-		}
-	}
-
-	cout << floor << endl;
-
-	return 0;
+    cout << "Part 1: " << floor << endl;
+    
+    return 0;
 }
