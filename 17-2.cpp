@@ -24,6 +24,7 @@ int main(){
 	rounds = rounds << input.size();
 
 	int result = 0;
+	int min = input.size();
 
 	for(int i = 0; i < rounds; i++){
 		int sum = 0;
@@ -31,7 +32,18 @@ int main(){
 			sum += test_bin[j] * input[j];
 		}
 		if(sum == nog_count){
-			result++;
+			//count containers
+			int containers = 0;
+			for(int i : test_bin){
+				containers += i;
+			}
+			if(containers == min){
+				result++;
+			}
+			else if(containers < min){
+				result = 1;
+				min = containers;
+			}
 		}
 		advance(test_bin);
 	}
