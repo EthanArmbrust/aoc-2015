@@ -2,6 +2,9 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <chrono>
+#include <thread>
+#include <curses.h>
 
 using namespace std;
 vector<string> step(vector<string> &grid);
@@ -20,9 +23,19 @@ int main(){
 	input[input.size() - 1][0] = '#';
 	input[input.size() - 1][input.size() - 1] = '#';
 
-	for(int i = 0; i < 100; i++){
+	initscr();
+	curs_set(0);
+
+	for(int i = 0; i < 5000; i++){
 		input = step(input);
+		for(int j = 0; j < input.size(); j++){
+			mvaddstr(j, 0, input[j].c_str());
+		}
+		refresh();
+		this_thread::sleep_for(chrono::milliseconds(80));
 	}
+	getch();
+    endwin();
 
 	int count = 0;
 	for(auto s : input){
@@ -31,7 +44,6 @@ int main(){
 				count++;
 			}
 		}
-		cout << s << endl;
 	}
 
 	cout << count << endl;	
