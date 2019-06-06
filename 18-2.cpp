@@ -53,7 +53,7 @@ int main(){
 
 vector<string> step(vector<string> &grid){
 	auto result = grid;
-	for(int i = 0; i < grid.size(); i++){
+	for(size_t i = 0; i < grid.size(); i++){
 		for(int j = 0; j < grid[0].length(); j++){
 			bool isOn = grid[i][j] == '#';
 			int onCount = 0;
