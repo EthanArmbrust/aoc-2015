@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <climits>
 
 using namespace std;
 
@@ -44,6 +45,27 @@ int main(){
 	vector<Item> weapons{d,s,w,l,g};
 	vector<Item> armors{no, le, ch, sp, bd, pl};
 	vector<Item> rings{dm1, dm2, dm3, df1, df2, df3};
+    
+    vector<vector<Item>> ring_combos;
+    
+    vector<Item> empty_v{};
+    ring_combos.push_back(empty_v);
+    
+    for(auto r : rings){
+        vector<Item> one{r};
+        ring_combos.push_back(one);
+    }
+    for(int x = 0; x < rings.size(); x++){
+        for(int y = x + 1; y < rings.size(); y++){
+            vector<Item> two{rings[x], rings[y]};
+            ring_combos.push_back(two);
+        }
+    }
+    
+    int minGold = INT_MAX;
+    string weapon_name;
+    string armor_name;
+    vector<string> ring_names;
 
 	for(int i = 0; i < weapons.size(); i++){
 		//select weapon
@@ -51,14 +73,44 @@ int main(){
 		for(int j = 0; j < armors.size(); j++){
 			//select armor
 			Item armor = armors[j];
-			for(int n = 0; n <= 2; n++){
-				//for every ring
-				for(int x = 0; x <= n; x++){
-					vector<Item> player_rings;
-				}
-			}
+            for(auto rv : ring_combos){
+                int player_damage = weapon.damage;
+                int player_armor = armor.armor;
+                int goldCost = weapon.cost + armor.cost;
+                for(auto r : rv){
+                    player_damage += r.damage;
+                    player_armor += r.armor;
+                    goldCost += r.cost;
+                }
+                if(battleSim(player_hp, player_damage, player_armor)){
+                    cout << "Weapon: " << weapon_name << endl;
+                    cout << "Armor: " << armor_name << endl;
+                    for(auto r : ring_names){
+                        cout << "Ring: " << r << endl;
+                    }
+	
+                    cout << goldCost << endl;
+                    if(goldCost < minGold){
+                        minGold = goldCost;
+                        weapon_name = weapon.name;
+                        armor_name = armor.name;
+                        ring_names.clear();
+                        for(auto r : rv){
+                            ring_names.push_back(r.name);
+                        }
+                        
+                    }
+                }
+            }
 		}
 	}
+	cout << "Weapon: " << weapon_name << endl;
+    cout << "Armor: " << armor_name << endl;
+    for(auto r : ring_names){
+        cout << "Ring: " << r << endl;
+    }
+	
+	cout << minGold << endl;
 
     return 0;
 }
